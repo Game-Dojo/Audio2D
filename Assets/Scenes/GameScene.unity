@@ -604,6 +604,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 6ce150cce7d754e44b8531213407462e, type: 3}
   musicSource: {fileID: 1366482213}
   soundSource: {fileID: 177975907}
+  _mixer: {fileID: 24100000, guid: f6fcb88f0100f9345a88270a61ca358a, type: 2}
   playButton: {fileID: 1279212757}
 --- !u!1 &1279212755
 GameObject:
