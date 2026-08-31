@@ -601,7 +601,6 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 7ddaf5f8bd424374597264869a4e51bd, type: 3}
   - {fileID: 8300000, guid: c0fb52d85e11aca4fb7b4ddb1ae4de49, type: 3}
   - {fileID: 8300000, guid: 6ce150cce7d754e44b8531213407462e, type: 3}
-  - {fileID: 8300000, guid: 6ce150cce7d754e44b8531213407462e, type: 3}
   musicSource: {fileID: 1366482213}
   soundSource: {fileID: 177975907}
   _mixer: {fileID: 24100000, guid: f6fcb88f0100f9345a88270a61ca358a, type: 2}
@@ -1043,6 +1042,6 @@ SceneRoots:
   m_Roots:
   - {fileID: 519420032}
   - {fileID: 619394802}
-  - {fileID: 772113943}
   - {fileID: 1442156128}
+  - {fileID: 772113943}
   - {fileID: 238654726}
