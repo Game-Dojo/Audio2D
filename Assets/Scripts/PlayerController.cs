@@ -4,6 +4,15 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
+    [Header("Refs")]
+    [SerializeField] private GameObject bullet;
+    [SerializeField] private Transform bulletSpawner;
+
+    [Header("Laser")]
+    [SerializeField] private LineRenderer laserRenderer;
+    [SerializeField] private LayerMask layerMasks;
+
+    [Header("Input Actions")]
     [SerializeField] private InputActionReference moveAction;
     [SerializeField] private InputActionReference lookAction;
     [SerializeField] private InputActionReference attackAction;
@@ -24,15 +33,25 @@ public class PlayerController : MonoBehaviour
         interactAction.action.performed += OnInteract;
     }
 
-    private void OnReleaseMove(InputAction.CallbackContext context)
+    private void Update()
     {
-        _movement = Vector2.zero;
-        _body.linearVelocity = Vector2.zero;
+        var hit = Physics2D.Raycast(bulletSpawner.position, bulletSpawner.right, 10f, layerMasks);
+        //Debug.DrawRay(bulletSpawner.position, bulletSpawner.right * 10f, Color.violetRed);
+        if (hit)
+        {
+            laserRenderer.SetPosition(1, laserRenderer.transform.InverseTransformPoint(hit.point));
+        }
     }
 
     private void FixedUpdate()
     {
         _body.linearVelocity = _movement * 7.0f;
+    }
+    
+    private void OnReleaseMove(InputAction.CallbackContext context)
+    {
+        _movement = Vector2.zero;
+        _body.linearVelocity = Vector2.zero;
     }
 
     private void OnInteract(InputAction.CallbackContext ctx)
@@ -43,6 +62,17 @@ public class PlayerController : MonoBehaviour
     private void OnAttack(InputAction.CallbackContext ctx)
     {
         print("Attack");
+        
+        GameObject go = Instantiate(bullet, bulletSpawner.position, Quaternion.identity);
+        if (go)
+        {
+            if(go.TryGetComponent<Rigidbody2D>(out Rigidbody2D rb2D))
+            {
+                rb2D.AddForce(transform.right * 10f, ForceMode2D.Impulse);
+            }
+
+            Destroy(go, 8f);
+        }
     }
 
     private void OnLook(InputAction.CallbackContext ctx)
