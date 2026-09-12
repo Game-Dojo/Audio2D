@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
@@ -20,6 +21,10 @@ public class PlayerController : MonoBehaviour
 
     private Rigidbody2D _body;
     private Vector3 _movement;
+
+    public Action OnPlayerShoot;
+
+    public UnityEvent onPlayerShoot2;
 
     private void Awake()
     {
@@ -61,18 +66,19 @@ public class PlayerController : MonoBehaviour
 
     private void OnAttack(InputAction.CallbackContext ctx)
     {
-        print("Attack");
-        
         GameObject go = Instantiate(bullet, bulletSpawner.position, Quaternion.identity);
         if (go)
         {
             if(go.TryGetComponent<Rigidbody2D>(out Rigidbody2D rb2D))
             {
-                rb2D.AddForce(transform.right * 10f, ForceMode2D.Impulse);
+                rb2D.AddForce(transform.right * 15f, ForceMode2D.Impulse);
             }
 
             Destroy(go, 8f);
         }
+        
+        onPlayerShoot2?.Invoke();
+        OnPlayerShoot?.Invoke();
     }
 
     private void OnLook(InputAction.CallbackContext ctx)

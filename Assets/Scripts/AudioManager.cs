@@ -24,7 +24,7 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioSource soundSource;
 
     [Header("Mixer")]
-    [SerializeField] private AudioMixer _mixer;
+    [SerializeField] private AudioMixer mixer;
 
     [Header("Testing")]
     [SerializeField] private Button playButton;
@@ -41,7 +41,7 @@ public class AudioManager : MonoBehaviour
         }
 
         _instance = this;
-        //DontDestroyOnLoad(this.gameObject);
+        DontDestroyOnLoad(this.gameObject);
     }
 
     private void Start()
@@ -80,6 +80,7 @@ public class AudioManager : MonoBehaviour
             AudioSource source = go.AddComponent<AudioSource>();
             source.spatialBlend = 1.0f;
             source.rolloffMode = AudioRolloffMode.Linear;
+            
             source.minDistance = 2.0f;
             source.maxDistance = 5.0f;
 
@@ -105,11 +106,11 @@ public class AudioManager : MonoBehaviour
 
     private IEnumerator FadeGroup()
     {
-        _mixer.GetFloat("MusicVolume", out float musicVolume);
+        mixer.GetFloat("MusicVolume", out float musicVolume);
         var waitTime = new WaitForSeconds(0.1f);
         while (musicVolume > -80)
         {
-            _mixer.SetFloat("MusicVolume", musicVolume -= 2f);
+            mixer.SetFloat("MusicVolume", musicVolume -= 2f);
             yield return waitTime;
         }
     }
@@ -118,7 +119,7 @@ public class AudioManager : MonoBehaviour
     {
         float currentTime = 0;
         
-        _mixer.GetFloat("Music", out float startDb);
+        mixer.GetFloat("Music", out float startDb);
 
         float startLinear = Mathf.Pow(10f, startDb / 20f);
         float targetLinear = Mathf.Pow(10f, targetDb / 20f);
@@ -132,11 +133,11 @@ public class AudioManager : MonoBehaviour
 
             float newDb = Mathf.Log10(Mathf.Max(currentLinear, 0.0001f)) * 20f;
             
-            _mixer.SetFloat("Music", newDb);
+            mixer.SetFloat("Music", newDb);
             yield return null;
         }
 
-        _mixer.SetFloat("Music", targetDb);
+        mixer.SetFloat("Music", targetDb);
     }
     
     private void OnDestroy()
@@ -145,5 +146,6 @@ public class AudioManager : MonoBehaviour
     }
 
     public static AudioManager Instance => _instance;
+    
     //AudioManager.Instance.PlaySound(AudioList.JinglesSax);
 }
