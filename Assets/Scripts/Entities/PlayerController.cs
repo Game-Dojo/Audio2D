@@ -19,6 +19,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private InputActionReference attackAction;
     [SerializeField] private InputActionReference interactAction;
 
+    [SerializeField] private ObjectPooler pooler;
+    
     private Rigidbody2D _body;
     private Vector3 _movement;
 
@@ -66,15 +68,20 @@ public class PlayerController : MonoBehaviour
 
     private void OnAttack(InputAction.CallbackContext ctx)
     {
-        GameObject go = Instantiate(bullet, bulletSpawner.position, Quaternion.identity);
+        //GameObject go = Instantiate(bullet, bulletSpawner.position, Quaternion.identity);
+        GameObject go = pooler.GetPooledObject();
+        
         if (go)
         {
+            go.transform.position = bulletSpawner.position;
+            go.SetActive(true);
+            
             if(go.TryGetComponent<Rigidbody2D>(out Rigidbody2D rb2D))
             {
                 rb2D.AddForce(transform.right * 15f, ForceMode2D.Impulse);
             }
 
-            Destroy(go, 8f);
+            //Destroy(go, 8f);
         }
         
         onPlayerShoot2?.Invoke();

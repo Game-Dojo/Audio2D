@@ -4,6 +4,7 @@ using UnityEngine;
 public class EnemyController : MonoBehaviour
 {
     [SerializeField] private PlayerController player;
+    [SerializeField] private ScoreController scoreController;
     private Transform _playerTransform;
     
     
@@ -32,7 +33,7 @@ public class EnemyController : MonoBehaviour
         print("El player disparo");
 
         var dist = Vector3.Distance(player.transform.position, transform.position);
-        print(dist);
+
         if (dist < 6)
         {
             _inside = true;
@@ -59,6 +60,7 @@ public class EnemyController : MonoBehaviour
 
         if (_health <= 0)
         {
+            scoreController.AddScore(100);
             Destroy(gameObject);
         }
     }
